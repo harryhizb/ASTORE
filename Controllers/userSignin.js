@@ -23,6 +23,7 @@ const createToken = (user, res, next) => {
 			// Error Create the Token
 			if (err) {
 				res.status(500);
+				console.log(err);
 				next(new Error('Unable to generate Token.'));
 			} else {
 				// Token Created

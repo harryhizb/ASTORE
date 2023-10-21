@@ -30,11 +30,6 @@ eventRouter.delete(
 	events.deleteEvent,
 );
 
-eventRouter.patch(
-	'/edit/:id',
-	isAdminMiddleware.isManagerOwner,
-	events.editSales
-  );
 
 eventRouter.patch('/editProduct/:id',
 isAdminMiddleware.isManagerOwner, events.editEvent);

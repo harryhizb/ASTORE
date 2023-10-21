@@ -12,6 +12,7 @@ import WishList from '../Models/wishListSchema';
 import Offer from '../Models/offerSchema';
 import Order from '../Models/orderSchema';
 
+
  
 
 const getEvents = (req, res) => {
@@ -58,7 +59,7 @@ const addEvent = (req, res) => {
   };
   
 
-const deleteEvent = (req, res) => {
+  const deleteEvent = (req, res) => {
 	const { id } = req.params;
 	EventSchema.findByIdAndRemove(id, (err, result) => {
 		if (result) {
@@ -112,6 +113,8 @@ const getSingleEvent = (req, res) => {
 	  });
 	  });
 	};
+  
+  
 
 const buyItem = async (req, res) => {
 		try {
