@@ -5,6 +5,8 @@ const EventSchema = new mongoose.Schema(
     name: String,
     price: Number,
     description: String,
+    weight : Number,
+    category: [],
     status: {
       type: String,
       enum: ['Available', 'Not Available'],
@@ -25,9 +27,9 @@ const EventSchema = new mongoose.Schema(
       ref: 'Offer', // Reference to the Offer schema
     },
     // Add an array of picture URLs
-    imageUrl: {
-      type: String,
-      default: '',
+    imageUrls: {
+      type: [String], // Define an array of strings
+      default: [],    // An empty array by default, as no images are added initially
     },
   },
   {

@@ -12,15 +12,16 @@ import eventValidator from '../validations/event';
 const eventRouter = express.Router();
 
 eventRouter.post(
-	'/addProduct',
-	isLoggedInUser.isLoggedIn,
+	'/addEvent',
+	isAdminMiddleware.isManagerOwner,
 	eventValidator.addEvent,
 	events.addEvent,
 );
 
 eventRouter.get('/getAllProduct',events.getEvents);
 
-eventRouter.get('/getSingleEvent/:id', events.getSingleEvent);
+eventRouter.get('/getSingleProduct/:id', events.getSingleEvent);
+eventRouter.get('/getAllUser', isAdminMiddleware.isManagerOwner, events.getAllUsers);
 
 // only admin can delete
 eventRouter.delete(
@@ -38,11 +39,6 @@ eventRouter.patch(
 eventRouter.patch('/editProduct/:id',
 isAdminMiddleware.isManagerOwner, events.editEvent);
 
-eventRouter.post(
-    '/category',
-    isAdminMiddleware.isManagerOwner,
-	events.addCategory
-  );
 
   eventRouter.post(
 	'/postSale',
@@ -51,7 +47,7 @@ eventRouter.post(
   );
 
   eventRouter.patch(
-	'/edit/:saleId',
+	'/editSalesProduct/:id',
 	isAdminMiddleware.isManagerOwner,
 	events.editSales
   );

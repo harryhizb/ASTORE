@@ -10,7 +10,6 @@ import userSchema from '../Models/userSchema';
 import Cart from '../Models/cartListSchema';
 import WishList from '../Models/wishListSchema';
 import Offer from '../Models/offerSchema';
-import Category from '../Models/categorySchema';
 import Order from '../Models/orderSchema';
 
  
@@ -29,13 +28,15 @@ const getEvents = (req, res) => {
   };
   
 const addEvent = (req, res) => {
-	const { name, price, description, imageUrl } = req.body;
+	const { name, price, description, imageUrl, weight, category } = req.body;
   
 	const event = new EventSchema({
 	  name,
 	  price,
 	  description,
 	  imageUrl,
+	  weight,
+	  category,
 	  addedBy: req.user_id, 
 	});
   
@@ -336,32 +337,6 @@ const editSales = async (req, res) => {
 			  };
 
 
-
-const addCategory = async (req, res) => {
-				try {
-					const { category, details } = req.body;
-			  
-					const newcategory = new Category({
-						category,
-						details,
-					});
-			  
-					const savedcategory = await newcategory.save(); // Use await here
-			  
-					res.status(status.OK).send({
-						savedcategory, // Use the correct variable name
-						Message: 'Product Added Successfully',
-						type: status.OK,
-					});
-				} catch (err) {
-					console.error('Error adding product:', err); // Log the error for debugging
-					res.status(status.INTERNAL_SERVER_ERROR).send({
-						Message: 'Internal Server Error',
-						error: err.message, // Send the error message in the response
-					});
-				}
-			  };
-
 const getAllOrders = async (req, res) => {
 				try {
 				  const orders = await Order.find().populate('customer').populate('products.product');
@@ -378,9 +353,23 @@ const getAllOrders = async (req, res) => {
 				  });
 				}
 			  };
+ const getAllUsers = (req, res) => {
+				userSchema.find()
+				  .then(users => {
+					res.status(status.OK).send(users);
+				  })
+				  .catch(err => {
+					res.status(status.INTERNAL_SERVER_ERROR).send({
+					  Message: 'Unable to fetch users',
+					  err,
+					});
+				  });
+			  };
+			  
 			  
 
 		export default {
+			getAllUsers,
 			postSale,
 			addToWishList,
 			AddToCart ,
@@ -394,6 +383,5 @@ const getAllOrders = async (req, res) => {
 			editEvent,
 			getSingleEvent,
 			editSales,
-			addCategory,
 			getAllOrders,
 		  };
