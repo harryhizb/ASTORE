@@ -13,6 +13,7 @@ import Offer from '../Models/offerSchema';
 import Order from '../Models/orderSchema';
 
 
+
  
 
 const getEvents = (req, res) => {
@@ -93,26 +94,27 @@ const editEvent = (req, res) => {
 };
 
 const getSingleEvent = (req, res) => {
-	const { id } = req.params; // Assuming the city is passed as a parameter
-
-	EventSchema.findOne({_id:id})
-	  .then (product => {
-	  if (product) {
-		res.status(status.OK).send(product);
-	  } else {
-		res.status(status.NOT_FOUND).send({
-		Message: 'user not found.',
-		});
-	  }
+	const { id } = req.params; // Assuming the ID is passed as a parameter
+  
+	EventSchema.findOne({  id }) // Use _id to match the MongoDB document ID
+	  .then(event => {
+		if (event) {
+		  res.status(status.OK).send(event);
+		} else {
+		  res.status(status.NOT_FOUND).send({
+			Message: 'Event not found.',
+		  });
+		}
 	  })
 	  .catch(err => {
-	  console.log(err);
-	  res.status(status.INTERNAL_SERVER_ERROR).send({
-		Message: 'Internal server error',
-		Error: err,
+		console.error(err);
+		res.status(status.INTERNAL_SERVER_ERROR).send({
+		  Message: 'Internal server error',
+		  Error: err,
+		});
 	  });
-	  });
-	};
+  };
+  
   
   
 
@@ -369,9 +371,32 @@ const getAllOrders = async (req, res) => {
 				  });
 			  };
 			  
+const getCart = (req, res) => {
+				const userId = req.user.id; // Retrieve the user's ID from the authenticated user object
+			  
+				Cart.find({ user: userId })
+				  
+				  .then(cartItems => {
+					res.status(status.OK).send(cartItems);
+				  })
+				  .catch(err => {
+					console.error(err);
+					res.status(status.INTERNAL_SERVER_ERROR).send({
+					  Message: 'Internal server error',
+					  Error: err,
+					});
+				  });
+			  };
+			  
+			  
+			  
+			  
+			  
+			  
 			  
 
 		export default {
+			getCart,
 			getAllUsers,
 			postSale,
 			addToWishList,

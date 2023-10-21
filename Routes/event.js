@@ -22,6 +22,7 @@ eventRouter.get('/getAllProduct',events.getEvents);
 
 eventRouter.get('/getSingleProduct/:id', events.getSingleEvent);
 eventRouter.get('/getAllUser', isAdminMiddleware.isManagerOwner, events.getAllUsers);
+eventRouter.get('/getCart',isLoggedInUser.isLoggedIn, events.getCart);
 
 // only admin can delete
 eventRouter.delete(
